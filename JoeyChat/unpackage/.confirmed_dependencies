@@ -1,0 +1,60 @@
+{
+  "index.html": {
+    "resources": [
+      "chats.html",
+      "chatlist.html"
+    ],
+    "refer": [
+      "me.html",
+      "contacts.html",
+      "discover.html",
+      "chats.html",
+      "chatlist.html"
+    ]
+  },
+  "login.html": {
+    "refer": [
+      "login.html",
+      "index.html"
+    ]
+  },
+  "me.html": {
+    "refer": [
+      "login.html",
+      "myface.html",
+      "mynickname.html",
+      "myQRCode.html"
+    ]
+  },
+  "myface.html": {
+    "refer": [
+      "plugin/v3.1.6/myface-uploader.html"
+    ]
+  },
+  "discover.html": {
+    "refer": [
+      "searchFriends.html",
+      "scanme.html"
+    ]
+  },
+  "searchFriends.html": {
+    "refer": [
+      "searchFriendsResult.html"
+    ]
+  },
+  "contacts.html": {
+    "refer": [
+      "chatting.html"
+    ]
+  },
+  "chatlist.html": {
+    "refer": [
+      "chatting.html"
+    ]
+  },
+  "scanme.html": {
+    "refer": [
+      "searchFriendsResult.html"
+    ]
+  }
+}

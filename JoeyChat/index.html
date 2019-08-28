@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+	<link rel="stylesheet" type="text/css" href="css/header.css"/>
+												   
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+		
+		mui.plusReady(function(){
+			plus.navigator.setStatusBarBackground("#C9394A");
+			plus.navigator.setStatusBarStyle("light");
+		})
+    </script>
+</head>
+<body>
+ 
+	<header class="mui-bar mui-bar-nav title">
+		<h1 class="mui-title title-color" id="joeychat_title"><b>JoeyChat</b></h1>
+	</header>
+ 
+	<nav class="mui-bar mui-bar-tab">
+		<a class="mui-tab-item mui-active" tabindex="0">
+			<span class="mui-icon mui-icon-chat"></span>
+			<span class="mui-tab-label">JoeyChat</span>
+		</a>
+		<a class="mui-tab-item" tabindex="1">
+			<span class="mui-icon mui-icon-contact"></span>
+			<span class="mui-tab-label">Contacts</span>
+		</a>
+		<a class="mui-tab-item" tabindex="2">
+			<span class="mui-icon mui-icon-paperplane"></span>
+			<span class="mui-tab-label">Discover</span>
+		</a>
+		<a class="mui-tab-item" tabindex="3">
+			<span class="mui-icon mui-icon-person"></span>
+			<span class="mui-tab-label">Me</span>
+		</a>
+	</nav>
+	
+	<script type="text/javascript">
+		var chatArrays = [
+					
+			{
+				pageId:"chatlist.html",
+				pageUrl:"chatlist.html"
+			},
+			{
+				pageId:"contacts.html",
+				pageUrl:"contacts.html"
+			},
+			{
+				pageId:"discover.html",
+				pageUrl:"discover.html"
+			},
+			{
+				pageId:"me.html",
+				pageUrl:"me.html"
+			}
+		];
+		
+		var chatStyle={
+			top:"44px",
+			bottom:"50px"
+		}
+		
+		mui.plusReady(function(){
+			
+			// 禁止返回到登录注册页面
+			mui.back = function() {
+				return false;
+			}
+			
+			// 对网络连接进行事件监听
+			netChangeSwitch();
+			
+			//获取当前的webview对象
+			var indexWebView=plus.webview.currentWebview();
+   
+			//向当前的主页webview追加子页的webview对象
+			for (var i = 0; i < chatArrays.length; i++) {
+				var page = plus.webview.create(chatArrays[i].pageUrl,chatArrays[i].pageId,chatStyle);
+								  
+						 
+						  
+				page.hide();
+												 
+				indexWebView.append(page);
+			}
+			plus.webview.show(chatArrays[0].pageId);
+			
+			//批量绑定tap事件,展示不同的页面
+												   
+			mui(".mui-bar-tab").on("tap", "a", function() {
+				var tabindex = this.getAttribute("tabindex");
+				
+				// 显示点击的tab选项所对应的页面
+				plus.webview.show(chatArrays[tabindex].pageId, "fade-in", 200);
+				
+				// 隐藏其他的不需要的页面
+				for (var i = 0 ; i < chatArrays.length ; i ++) {
+					if (i != tabindex) {
+						plus.webview.hide(chatArrays[i].pageId, "fade-out", 200);
+					}
+				}
+			})
+   
+			// 延时加载
+			setTimeout("initData()", "1000");
+		});
+		
+		// 监听网络状态更改
+		function netChangeSwitch(){
+			document.addEventListener("netchange", function(){
+				// 网络状态获取和判断
+				var connectionStatus = plus.networkinfo.getCurrentType();
+				console.log("网络状态：2"+connectionStatus);
+				if (connectionStatus != 0 && connectionStatus != 1) {
+					// 重新打开网络连接
+					var joeychat_title = document.getElementById("joeychat_title");
+					joeychat_title.innerHTML = "<b>JoeyChat</b>";
+				} else {
+					// 关闭网络连接
+					var joeychat_title = document.getElementById("joeychat_title");
+					joeychat_title.innerHTML = "<b>JoeyChat(网络未连接)</b>";
+				}
+			});
+		}
+		
+		// 预加载
+		function initData() {
+			var chatlist = plus.webview.getWebviewById("chatlist.html");
+			mui.fire(chatlist, "refresh");
+			
+			var me = plus.webview.getWebviewById("me.html");
+			mui.fire(me, "refresh");
+		}
+  
+	</script>
+</body>
+</html>
